@@ -16,8 +16,10 @@ TRIGGER=${TRIGGER:-$(random_server $TRIGGER_PRODUCT $TRIGGER_ENVIRONMENT $TRIGGE
 
 source ./TURNER_METADATA
 
-# Add pod in deployit
-curl -sv -XPOST $DEPLOYIT/pods/$NAME/$ENVIRONMENT --data-binary '{"name":"'$NAME'","environment":"'$ENVIRONMENT'","replicas":1,"config":{"PORT":"8999","ENVIRONMENT":"'$ENVIRONMENT'","CUSTOMER":"mss"},"images":[{"name":"'$NAME'","version":"'$VERSION'"}]}'
+# Add or update pod in deployit (POST is add, PUT is update)
+for i in POST PUT; do
+  curl -sv -X$i $DEPLOYIT/pods/$NAME/$ENVIRONMENT --data-binary '{"name":"'$NAME'","environment":"'$ENVIRONMENT'","replicas":1,"config":{"PORT":"8999","ENVIRONMENT":"'$ENVIRONMENT'","CUSTOMER":"mss"},"images":[{"name":"'$NAME'","version":"'$VERSION'"}]}'
+done
 
 # Trigger deployment of pod
-curl -XPOST -d '' $TRIGGER/$NAME/$VERSION
+curl -sv -XPOST -d '' $TRIGGER/$NAME/$ENVIRONMENT
