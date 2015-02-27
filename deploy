@@ -1,0 +1,23 @@
+#!/bin/bash
+
+random_server() {
+  LIST=($(discover $1 $2 $3))
+  echo -ne ${LIST[$(random_number ${#LIST[@]})]}
+}
+
+ENVIRONMENT=staging
+
+TRIGGER_PRODUCT=${TRIGGER_PRODUCT:-deployit-trigger}
+TRIGGER_ENVIRONMENT=${TRIGGER_ENVIRONMENT:-kube}
+TRIGGER_LOCATION=${TRIGGER_LOCATION:-56m}
+
+DEPLOYIT=${DEPLOYIT:-http://srd-10-60-179-191.nodes.56m.dmtio.net:19601}
+TRIGGER=${TRIGGER:-$(random_server $TRIGGER_PRODUCT $TRIGGER_ENVIRONMENT $TRIGGER_LOCATION)}
+
+source ./TURNER_METADATA
+
+# Add pod in deployit
+curl -sv -XPOST $DEPLOYIT/pods/$NAME/$VERSION --data-binary '{"name":"'$NAME'","environment":"'$ENVIRONMENT'","replicas":1,"config":{"PORT":"8999","ENVIRONMENT":"'$ENVIRONMENT'","CUSTOMER":"mss"},"images":[{"name":"'$NAME'","version":"'$VERSION'"}]}'
+
+# Trigger deployment of pod
+curl -XPOST -d '' $TRIGGER/$NAME/$VERSION
