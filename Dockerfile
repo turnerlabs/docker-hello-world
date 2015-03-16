@@ -1,6 +1,8 @@
 FROM ubuntu:14.04
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV HEALTHCHECK /_healthcheck.txt
+ENV PORT 30000
 
 RUN apt-get update && \
     apt-get install -y nginx-light
