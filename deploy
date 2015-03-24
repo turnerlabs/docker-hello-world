@@ -31,7 +31,7 @@ source ./TURNER_METADATA
 
 # Add or update pod in deployit (POST is add, PUT is update)
 for i in POST PUT; do
-  curl -sv -X$i $DEPLOYIT/shipments/$NAME/$ENVIRONMENT --data-binary '{"name":"'$NAME'","environment":"'$ENVIRONMENT'","replicas":1,"config":{"PORT":"8999","CUSTOMER":"mss"},"containers":[{"name":"'$NAME'","version":"'$VERSION'"}],"discover":{"A_REGISTRY":"mss-docker-registry"}}'
+  curl -sv -X$i $DEPLOYIT/shipments/$NAME/$ENVIRONMENT --data-binary '{"name":"'$NAME'","environment":"'$ENVIRONMENT'","replicas":1,"config":{"PORT":"8999","CUSTOMER":"mss","ENVIRONMENT":"staging"},"containers":[{"name":"'$NAME'","version":"'$VERSION'"}],"discover":{"A_REGISTRY":"mss-docker-registry"}}'
 done
 
 # Trigger deployment of pod
