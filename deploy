@@ -1,31 +1,8 @@
 #!/bin/bash
 
-# NOTE: discover is temporary until there is a vip
-export IDB_URL=http://idb.56m.dmtio.net:18601
-discover() {
-  PRODUCT=$1
-  ENVIRONMENT=$2
-  LOCATION=$3
-  QUERY="NOT+offline:true"
-  if [ -n "$LOCATION" ]; then
-    QUERY="location:$LOCATION+AND+$QUERY"
-  fi
-  curl -s "$IDB_URL/instances/$1/$2?q=$QUERY" | tr ',{}' "\n" | egrep '(PORT|ipaddress)' | cut -d'"' -f4 | paste -d':' - - | sed 's/^\([^.:]*\):\(.*\)$/\2:\1/'
-}
-
-random_server() {
-  LIST=($(discover $1 $2 $3))
-  echo -ne ${LIST[$(random_number ${#LIST[@]})]}
-}
-
-ENVIRONMENT=staging
-
-TRIGGER_PRODUCT=${TRIGGER_PRODUCT:-deployit-trigger}
-TRIGGER_ENVIRONMENT=${TRIGGER_ENVIRONMENT:-tempactive}
-TRIGGER_LOCATION=${TRIGGER_LOCATION:-56m}
-
+ENVIRONMENT=${ENVIRONMENT:-staging}
 DEPLOYIT=${DEPLOYIT:-http://deployit.services.dmtio.net}
-TRIGGER=${TRIGGER:-$(random_server $TRIGGER_PRODUCT $TRIGGER_ENVIRONMENT $TRIGGER_LOCATION)}
+TRIGGER=${TRIGGER:-http://deployit-trigger.staging.services.ec2.dmtio.net:8888}
 
 source ./TURNER_METADATA
 
