@@ -2,7 +2,7 @@
 
 ENVIRONMENT=${ENVIRONMENT:-staging}
 DEPLOYIT=${DEPLOYIT:-http://deployit.services.dmtio.net}
-TRIGGER=${TRIGGER:-http://deployit-trigger.staging.services.ec2.dmtio.net:8888}
+TRIGGER=${TRIGGER:-http://trigger.services.dmtio.net:8675}
 
 source ./TURNER_METADATA
 
