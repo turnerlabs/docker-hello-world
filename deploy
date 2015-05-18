@@ -6,11 +6,13 @@ TRIGGER=${TRIGGER:-http://trigger.services.dmtio.net:8675}
 
 source ./TURNER_METADATA
 
+SHIPMENT=${SHIPMENT:-$NAME}
+CUSTOMER=${CUSTOMER:-mss}
+
 # Add or update pod in deployit (POST is add, PUT is update)
 for i in POST PUT; do
   #curl -sv -X$i $DEPLOYIT/shipments/$NAME/$ENVIRONMENT --data-binary '{"name":"'$NAME'","environment":"'$ENVIRONMENT'","replicas":1,"config":{"PORT":"8999","CUSTOMER":"mss","ENVIRONMENT":"staging"},"containers":[{"name":"'$NAME'","version":"'$VERSION'"}],"discover":{"A_REGISTRY":"mss-docker-registry"}}'
-  curl -sv -X$i $DEPLOYIT/shipments/$NAME/$ENVIRONMENT --data-binary '{"name":"'$NAME'","environment":"'$ENVIRONMENT'","replicas":1,"config":{"PORT":"8999","CUSTOMER":"mss","ENVIRONMENT":"staging"},"containers":[{"name":"'$NAME'","version":"'$VERSION'"}]}'
+  curl -sv -X$i $DEPLOYIT/shipments/$SHIPMENT/$ENVIRONMENT --data-binary '{"name":"'$SHIPMENT'","environment":"'$ENVIRONMENT'","replicas":1,"config":{"PORT":"8999","CUSTOMER":"ea","ENVIRONMENT":"staging"},"containers":[{"name":"'$NAME'","version":"'$VERSION'"}]}'
 done
 
 # Trigger deployment of pod
-curl -sv -XPOST -d '' $TRIGGER/$NAME/$ENVIRONMENT
