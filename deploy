@@ -16,3 +16,4 @@ for i in POST PUT; do
 done
 
 # Trigger deployment of pod
+curl -XPOST -d'{}' "http://trigger.services.dmtio.net/$SHIPMENT/$ENVIRONMENT"
