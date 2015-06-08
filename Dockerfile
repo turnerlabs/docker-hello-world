@@ -19,6 +19,9 @@ RUN apt-get remove -y --purge gcc cpp binutils make git-core && \
 RUN find /app -type d -print0 | xargs -0 chmod +xr && \
     find /app -type f -print0 | xargs -0 chmod +r
 
+RUN echo hi > /app/testfile
+RUN rm /app/testfile
+
 EXPOSE 30000
 
 CMD ["/app/start"]
